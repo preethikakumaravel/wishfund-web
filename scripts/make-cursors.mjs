@@ -1,0 +1,63 @@
+// Generates the pixel-art cursor SVGs in public/ from character grids.
+// B = black outline, W = white fill, . = transparent. Run: node scripts/make-cursors.mjs
+import { writeFileSync } from 'node:fs';
+
+const arrow = `
+B...........
+BB..........
+BWB.........
+BWWB........
+BWWWB.......
+BWWWWB......
+BWWWWWB.....
+BWWWWWWB....
+BWWWWWWWB...
+BWWWWWWWWB..
+BWWWWWWWWWB.
+BWWWWWWBBBBB
+BWWWBWWB....
+BWWBBWWB....
+BWB..BWWB...
+BB...BWWB...
+B.....BWWB..
+......BWWB..
+.......BB...`;
+
+const hand = `
+.....BB.........
+....BWWB........
+....BWWB........
+....BWWB........
+....BWWBBB......
+....BWWBWWBBB...
+....BWWBWWBWWBB.
+.BB.BWWBWWBWWBWB
+BWWBBWWWWWWWWBWB
+BWWWBWWWWWWWWWWB
+.BWWBWWWWWWWWWWB
+..BWWWWWWWWWWWWB
+..BWWWWWWWWWWWB.
+...BWWWWWWWWWWB.
+...BWWWWWWWWWB..
+....BWWWWWWWWB..
+....BWWWWWWWWB..
+....BBBBBBBBBB..`;
+
+const COLORS = { B: '#000', W: '#fff' };
+
+function toSvg(grid, scale) {
+  const rows = grid.trim().split('\n');
+  const w = rows[0].length * scale;
+  const h = rows.length * scale;
+  let rects = '';
+  rows.forEach((row, y) =>
+    [...row].forEach((c, x) => {
+      if (COLORS[c]) rects += `<rect x="${x * scale}" y="${y * scale}" width="${scale}" height="${scale}" fill="${COLORS[c]}"/>`;
+    }),
+  );
+  return `<svg xmlns="http://www.w3.org/2000/svg" width="${w}" height="${h}" viewBox="0 0 ${w} ${h}" shape-rendering="crispEdges">${rects}</svg>\n`;
+}
+
+writeFileSync('public/cursor.svg', toSvg(arrow, 2));
+writeFileSync('public/cursor-hand.svg', toSvg(hand, 2));
+console.log('cursors written');
