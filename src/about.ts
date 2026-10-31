@@ -16,9 +16,9 @@ export const about = {
   ],
   rightNotes: [
     { text: 'Saving up for things she loves', emoji: '🎁', boxed: true },
-    { text: 'Pink is a personality', emoji: '🌸' },
+    { text: 'Blue is her favourite colour', emoji: '💙' },
     { text: 'Sunflower energy', emoji: '🌻' },
-    { text: 'Introvert but yaps non-stop if you know her', emoji: '💬' },
+    { text: 'Extrovert who talks to everyone', emoji: '💬' },
     { text: 'Coffee + code = happy place', emoji: '☕' },
     { text: 'Wishlist is always growing', emoji: '🛍️' },
   ],

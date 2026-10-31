@@ -2,20 +2,6 @@ import { about } from '../about';
 
 const RED = '#e2263f';
 
-function Squiggle() {
-  return (
-    <svg className="squiggle" viewBox="0 0 120 12" aria-hidden>
-      <path
-        d="M2 8 Q 12 2 22 8 T 42 8 T 62 8 T 82 8 T 102 8 T 118 6"
-        fill="none"
-        stroke={RED}
-        strokeWidth="2.5"
-        strokeLinecap="round"
-      />
-    </svg>
-  );
-}
-
 /** Three little "burst" strokes, like a hand-drawn emphasis mark. */
 function Burst({ flip }: { flip?: boolean }) {
   return (
@@ -36,16 +22,12 @@ interface Note {
 }
 
 function NoteItem({ note, side }: { note: Note; side: 'left' | 'right' }) {
-  const words = note.text.split(' ');
-  // Highlight the last word like a marker swipe.
-  const last = words.pop();
   const emoji = <span className="note__emoji">{note.emoji}</span>;
   return (
     <div className={`note note--${side}`}>
       {side === 'right' && emoji}
-      <span className={note.boxed ? 'note--boxed' : undefined}>
-        {words.join(' ')} <u>{last}</u>
-        {!note.boxed && <Squiggle />}
+      <span className={`note__body ${note.boxed ? 'note--boxed' : ''}`}>
+        <span className="note__text">{note.text}</span>
       </span>
       {side === 'left' && emoji}
     </div>
