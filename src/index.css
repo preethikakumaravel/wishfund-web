@@ -914,13 +914,14 @@ button {
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
-  gap: 4px;
+  gap: 0;
   margin-top: 6px;
 }
 
 .ransom b {
   display: inline-block;
   min-width: 0.9em;
+  margin: 0 -0.04em;
   padding: 0.02em 0.14em 0.08em;
   font-size: clamp(46px, 9vw, 96px);
   font-weight: normal;
@@ -939,14 +940,14 @@ button {
 /* Desktop: photo in the middle, notes pinned around it at hand-picked spots. */
 .board {
   position: relative;
-  min-height: 790px;
+  min-height: 840px;
   margin-top: 30px;
 }
 
 .cutout {
   position: relative;
   z-index: 1;
-  width: min(340px, 34%);
+  width: min(390px, 37%);
   margin: 0 auto;
 }
 
@@ -984,10 +985,9 @@ button {
   z-index: 2;
   display: flex;
   align-items: center;
-  gap: 10px;
-  max-width: min(310px, 31%);
-  font-size: clamp(16px, 1.6vw, 20px);
-  text-wrap: balance;
+  gap: 12px;
+  max-width: min(320px, 31%);
+  font-size: clamp(17px, 1.7vw, 21px);
   line-height: 1.3;
   transform: rotate(var(--rot));
 }
@@ -1000,11 +1000,32 @@ button {
 
 .scrap--right {
   right: var(--x);
+  flex-direction: row-reverse;
+  justify-content: flex-end;
   text-align: left;
 }
 
 .scrap--big {
   font-size: clamp(20px, 2vw, 25px);
+}
+
+.scrap__words {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 4px;
+  min-width: 0;
+}
+
+.scrap--right .scrap__words {
+  align-items: flex-start;
+}
+
+.scrap__line {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  text-wrap: balance;
 }
 
 .scrap__text {
@@ -1020,19 +1041,39 @@ button {
   flex: none;
 }
 
-.scrap--left .scrap__doodle {
-  order: -1;
+/* Cut-out photo sticker: thin white edge and a soft paper shadow. */
+.scrap__sticker,
+.corner {
+  flex: none;
+  width: 108px;
+  height: auto;
+  filter:
+    drop-shadow(2px 0 0 #fff)
+    drop-shadow(-2px 0 0 #fff)
+    drop-shadow(0 2px 0 #fff)
+    drop-shadow(0 -2px 0 #fff)
+    drop-shadow(3px 5px 4px rgba(0, 0, 0, 0.2));
+  transform: rotate(calc(var(--rot) * -3));
 }
 
-/* Arrows hang below the note and point in toward the photo. */
-.scrap:has(.scrap__arrow) {
-  flex-direction: column;
-  align-items: flex-end;
-  gap: 2px;
+.corner {
+  position: absolute;
+  z-index: 0;
+  pointer-events: none;
 }
 
-.scrap--right:has(.scrap__arrow) {
-  align-items: flex-start;
+.corner--0 {
+  top: -30px;
+  left: -40px;
+  width: 170px;
+  transform: rotate(-18deg);
+}
+
+.corner--1 {
+  top: 330px;
+  right: -36px;
+  width: 140px;
+  transform: rotate(24deg);
 }
 
 .pen-circle {
@@ -1052,25 +1093,12 @@ button {
   height: 10px;
 }
 
-.board__hearts {
-  position: absolute;
-  top: 520px;
-  left: 13%;
-  transform: rotate(-4deg);
-}
-
 .board__star {
   position: absolute;
   z-index: 0;
-  right: 2%;
-  bottom: 0;
+  right: 22%;
+  bottom: -10px;
   transform: rotate(12deg);
-}
-
-.board__sparkle {
-  position: absolute;
-  top: 6px;
-  left: 31%;
 }
 
 /* ---------- footer ---------- */
@@ -1339,18 +1367,25 @@ button {
     align-self: flex-end;
   }
 
-  .scrap--left .scrap__doodle {
-    order: 0;
+  .scrap--right {
+    flex-direction: row;
   }
 
-  .scrap__arrow,
-  .board__hearts,
-  .board__sparkle {
+  .scrap__words,
+  .scrap--right .scrap__words {
+    align-items: flex-start;
+  }
+
+  .scrap__sticker {
+    width: 72px;
+  }
+
+  .corner--0 {
+    width: 110px;
+  }
+
+  .corner--1 {
     display: none;
-  }
-
-  .scrap:has(.scrap__arrow) {
-    align-items: center;
   }
 
   .board__star {
@@ -1387,6 +1422,11 @@ button {
 
   .stat-row {
     grid-template-columns: repeat(2, 1fr);
+  }
+
+  /* Keep the cut-out name on one line on phones. */
+  .ransom b {
+    font-size: 8vw;
   }
 
   .quest-grid,

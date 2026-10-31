@@ -5,23 +5,9 @@ import type { ReactNode } from 'react';
 
 const RED = '#e2263f';
 const PINK = '#ff4fa3';
-const BLUE = '#2f7de1';
 const INK = '#2a2a2a';
 
-export type DoodleName =
-  | 'asterisk'
-  | 'arrow'
-  | 'arrow-back'
-  | 'hearts'
-  | 'plane'
-  | 'camera'
-  | 'sunflower'
-  | 'coffee'
-  | 'blue-heart'
-  | 'sparkle'
-  | 'star'
-  | 'speech'
-  | 'gamepad';
+export type DoodleName = 'asterisk' | 'arrow' | 'arrow-back' | 'hearts' | 'plane' | 'star';
 
 const stroke = { fill: 'none', strokeLinecap: 'round', strokeLinejoin: 'round' } as const;
 
@@ -86,58 +72,6 @@ export function Doodle({ name, className }: { name: DoodleName; className?: stri
           </g>
         </Svg>
       );
-    case 'camera':
-      return (
-        <Svg w={52} h={40} view="0 0 52 40" className={className}>
-          <g {...stroke} stroke={INK} strokeWidth={2.2}>
-            <path d="M4 12 C 4 10, 5 9, 7 9 L15 9 L18 4 L32 4 L35 9 L45 9 C 47 9, 48 10, 48 12 L48 33 C 48 35, 47 36, 45 36 L7 36 C 5 36, 4 35, 4 33 Z" />
-            <circle cx="26" cy="22" r="8" />
-            <circle cx="26" cy="22" r="3.5" />
-            <path d="M40 14 L43 14" />
-          </g>
-        </Svg>
-      );
-    case 'sunflower':
-      return (
-        <Svg w={44} h={44} view="0 0 44 44" className={className}>
-          <g {...stroke} stroke="#d9a400" strokeWidth={2} fill="#ffd94a">
-            {Array.from({ length: 10 }, (_, i) => (
-              <ellipse key={i} cx="22" cy="9" rx="4" ry="8" transform={`rotate(${i * 36} 22 22)`} />
-            ))}
-          </g>
-          <circle cx="22" cy="22" r="7" fill="#6b3f1d" />
-        </Svg>
-      );
-    case 'coffee':
-      return (
-        <Svg w={44} h={46} view="0 0 44 46" className={className}>
-          <g {...stroke} stroke={INK} strokeWidth={2.2}>
-            <path d="M6 18 L9 42 L29 42 L32 18 Z" />
-            <path d="M32 23 C 40 22, 41 33, 31 34" />
-            <path d="M14 13 C 11 9, 17 7, 14 2" />
-            <path d="M22 13 C 19 9, 25 7, 22 2" />
-          </g>
-        </Svg>
-      );
-    case 'blue-heart':
-      return (
-        <Svg w={40} h={36} view="0 0 40 36" className={className}>
-          <path
-            d="M20 33 C 6 23, 2 15, 6 8 C 10 2, 18 4, 20 10 C 22 4, 31 2, 35 8 C 39 15, 34 23, 20 33 Z"
-            fill="#9cc8ff"
-            stroke={BLUE}
-            strokeWidth={2.4}
-            strokeLinejoin="round"
-          />
-          <path d="M11 11 C 12 9, 14 8, 15 8" {...stroke} stroke="#fff" strokeWidth={2} />
-        </Svg>
-      );
-    case 'sparkle':
-      return (
-        <Svg w={34} h={34} view="0 0 34 34" className={className}>
-          <path d="M17 2 C 18 12, 21 16, 32 17 C 21 18, 18 22, 17 32 C 16 22, 13 18, 2 17 C 13 16, 16 12, 17 2 Z" fill={PINK} />
-        </Svg>
-      );
     case 'star':
       return (
         <Svg w={150} h={146} view="0 0 150 146" className={className}>
@@ -155,26 +89,6 @@ export function Doodle({ name, className }: { name: DoodleName; className?: stri
             strokeWidth={1.6}
             opacity={0.7}
           />
-        </Svg>
-      );
-    case 'speech':
-      return (
-        <Svg w={46} h={40} view="0 0 46 40" className={className}>
-          <g {...stroke} stroke={INK} strokeWidth={2.2}>
-            <path d="M6 6 C 16 2, 32 2, 41 6 C 45 12, 45 20, 40 25 C 32 28, 22 28, 16 27 L7 36 L9 26 C 3 22, 2 12, 6 6 Z" />
-            <path d="M14 15 L15 15 M22 15 L23 15 M30 15 L31 15" strokeWidth={3.2} />
-          </g>
-        </Svg>
-      );
-    case 'gamepad':
-      return (
-        <Svg w={54} h={36} view="0 0 54 36" className={className}>
-          <g {...stroke} stroke={INK} strokeWidth={2.2}>
-            <path d="M12 6 L42 6 C 50 6, 54 24, 50 30 C 46 35, 40 30, 36 25 L18 25 C 14 30, 8 35, 4 30 C 0 24, 4 6, 12 6 Z" />
-            <path d="M14 12 L14 20 M10 16 L18 16" />
-          </g>
-          <circle cx="38" cy="13" r="2" fill={PINK} />
-          <circle cx="43" cy="18" r="2" fill={BLUE} />
         </Svg>
       );
   }

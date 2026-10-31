@@ -56,6 +56,11 @@ const SLOTS: { side: 'left' | 'right'; y: number; x: number; rot: number }[] = [
   { side: 'right', y: 545, x: 6, rot: -2 },
 ];
 
+const STICKERS = `${import.meta.env.BASE_URL}stickers/`;
+
+/** Doodles that hang below the words (arrows, hearts) rather than sitting beside them. */
+const BELOW: ReadonlySet<string> = new Set(['arrow', 'arrow-back', 'hearts']);
+
 function Scrap({ note, index }: { note: AboutNote; index: number }) {
   const slot = SLOTS[index % SLOTS.length];
   const style = {
@@ -63,17 +68,21 @@ function Scrap({ note, index }: { note: AboutNote; index: number }) {
     '--x': `${slot.x}%`,
     '--rot': `${slot.rot}deg`,
   } as CSSProperties;
-  // Arrows sit under the text pointing at the photo; other doodles sit beside it.
-  const arrow = note.doodle === 'arrow' || note.doodle === 'arrow-back';
+  const below = note.doodle && BELOW.has(note.doodle);
   return (
     <div className={`scrap scrap--${slot.side} ${note.big ? 'scrap--big' : ''}`} style={style}>
-      {note.doodle && !arrow && <Doodle name={note.doodle} className="scrap__doodle" />}
-      <span className={`scrap__text ${note.circled ? 'scrap__text--circled' : ''}`}>
-        {note.text}
-        {note.circled && <PenCircle />}
-        {note.underlined && <PenUnderline />}
-      </span>
-      {note.doodle && arrow && <Doodle name={note.doodle} className="scrap__arrow" />}
+      {note.sticker && <img className="scrap__sticker" src={STICKERS + note.sticker} alt="" loading="lazy" />}
+      <div className="scrap__words">
+        <span className="scrap__line">
+          {note.doodle && !below && <Doodle name={note.doodle} className="scrap__doodle" />}
+          <span className={`scrap__text ${note.circled ? 'scrap__text--circled' : ''}`}>
+            {note.text}
+            {note.circled && <PenCircle />}
+            {note.underlined && <PenUnderline />}
+          </span>
+        </span>
+        {note.doodle && below && <Doodle name={note.doodle} className="scrap__below" />}
+      </div>
     </div>
   );
 }
@@ -81,6 +90,9 @@ function Scrap({ note, index }: { note: AboutNote; index: number }) {
 export function AboutPage() {
   return (
     <div className="about">
+      {about.corners.map((file, i) => (
+        <img key={file} className={`corner corner--${i}`} src={STICKERS + file} alt="" loading="lazy" />
+      ))}
       <div className="about__inner">
         <p className="signoff">{about.signoff}</p>
 
@@ -100,9 +112,7 @@ export function AboutPage() {
             <Scrap key={n.text} note={n} index={i} />
           ))}
 
-          <Doodle name="hearts" className="board__hearts" />
           <Doodle name="star" className="board__star" />
-          <Doodle name="sparkle" className="board__sparkle" />
         </div>
       </div>
     </div>
