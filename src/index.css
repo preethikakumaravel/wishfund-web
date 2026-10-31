@@ -19,7 +19,7 @@
 
   --pixel: 'Press Start 2P', monospace;
   --term: 'VT323', monospace;
-  --hand: 'Coming Soon', cursive;
+  --hand: 'Nanum Pen Script', cursive;
   --bubble: 'Shrikhand', serif;
 
   --cursor: url('/cursor.svg') 0 0, auto;
@@ -867,7 +867,9 @@ button {
 /* ---------- about (scrapbook) ---------- */
 .about {
   position: relative;
-  color: #222;
+  /* Ballpoint-ink black with a hair of bleed so the writing sits in the paper. */
+  color: #1f1d24;
+  text-shadow: 0 0 0.6px rgba(31, 29, 36, 0.55);
   font-family: var(--hand);
   background-color: #fbf8f3;
   background-image:
@@ -889,7 +891,7 @@ button {
 .signoff {
   margin: 0;
   text-align: right;
-  font-size: 15px;
+  font-size: 21px;
 }
 
 .about__title {
@@ -904,8 +906,8 @@ button {
   align-self: center;
   margin-left: -30%;
   font-family: var(--hand);
-  font-size: clamp(34px, 5vw, 52px);
-  line-height: 1;
+  font-size: clamp(48px, 7vw, 76px);
+  line-height: 0.8;
   color: #111;
   transform: rotate(-3deg);
 }
@@ -928,19 +930,20 @@ button {
   line-height: 1;
   text-align: center;
   box-shadow: 2px 3px 0 rgba(0, 0, 0, 0.18);
+  text-shadow: none;
 }
 
 .about__role {
   margin: 14px 0 0;
   text-align: center;
-  font-size: 18px;
-  color: #555;
+  font-size: 25px;
+  color: #444;
 }
 
 /* Desktop: photo in the middle, notes pinned around it at hand-picked spots. */
 .board {
   position: relative;
-  min-height: 840px;
+  min-height: 760px;
   margin-top: 30px;
 }
 
@@ -974,7 +977,7 @@ button {
   background-image: repeating-linear-gradient(transparent 0 27px, #cfe0f7 27px 28px);
   box-shadow: 3px 5px 0 rgba(0, 0, 0, 0.08);
   transform: rotate(-2deg);
-  font-size: 17px;
+  font-size: 23px;
   line-height: 28px;
   text-align: center;
 }
@@ -987,8 +990,8 @@ button {
   align-items: center;
   gap: 12px;
   max-width: min(320px, 31%);
-  font-size: clamp(17px, 1.7vw, 21px);
-  line-height: 1.3;
+  font-size: clamp(22px, 2.2vw, 28px);
+  line-height: 1.05;
   transform: rotate(var(--rot));
 }
 
@@ -1006,7 +1009,7 @@ button {
 }
 
 .scrap--big {
-  font-size: clamp(20px, 2vw, 25px);
+  font-size: clamp(28px, 2.8vw, 35px);
 }
 
 .scrap__words {

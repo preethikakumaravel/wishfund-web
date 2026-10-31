@@ -52,8 +52,8 @@ const SLOTS: { side: 'left' | 'right'; y: number; x: number; rot: number }[] = [
   { side: 'right', y: 122, x: 2, rot: -2 },
   { side: 'right', y: 222, x: 0, rot: 2 },
   { side: 'right', y: 322, x: 1, rot: -3 },
-  { side: 'right', y: 432, x: 0, rot: 2 },
-  { side: 'right', y: 545, x: 6, rot: -2 },
+  { side: 'right', y: 455, x: 0, rot: 2 },
+  { side: 'right', y: 590, x: 6, rot: -2 },
 ];
 
 const STICKERS = `${import.meta.env.BASE_URL}stickers/`;
