@@ -1,35 +1,79 @@
+import type { CSSProperties } from 'react';
+
 import { about } from '../about';
+import type { AboutNote } from '../about';
+import { Doodle, PenCircle, PenUnderline } from '../ui/Doodles';
 
-const RED = '#e2263f';
+/** Cut-out magazine letters: each one gets its own paper colour, typeface and tilt. */
+const PAPERS = [
+  { bg: '#1b1530', fg: '#ffffff' },
+  { bg: '#ffd23f', fg: '#1b1530' },
+  { bg: '#9cc8ff', fg: '#0b3a75' },
+  { bg: '#ff4fa3', fg: '#ffffff' },
+  { bg: '#ffffff', fg: '#e2263f' },
+  { bg: '#f6e7c8', fg: '#2f7de1' },
+  { bg: '#5dfc8d', fg: '#1b1530' },
+];
+const FACES = ["'Abril Fatface', serif", "'Archivo Black', sans-serif", "'Special Elite', monospace", "'Playfair Display', serif"];
 
-/** Three little "burst" strokes, like a hand-drawn emphasis mark. */
-function Burst({ flip }: { flip?: boolean }) {
+function RansomName({ name }: { name: string }) {
   return (
-    <svg className="burst" viewBox="0 0 40 40" aria-hidden style={flip ? { transform: 'scaleX(-1)' } : undefined}>
-      <g stroke={RED} strokeWidth="3" strokeLinecap="round">
-        <line x1="30" y1="6" x2="22" y2="16" />
-        <line x1="36" y1="22" x2="24" y2="22" />
-        <line x1="30" y1="36" x2="22" y2="28" />
-      </g>
-    </svg>
+    <span className="ransom" aria-label={name}>
+      {[...name].map((ch, i) => {
+        const paper = PAPERS[(i * 3 + 1) % PAPERS.length];
+        const style: CSSProperties = {
+          background: paper.bg,
+          color: paper.fg,
+          fontFamily: FACES[(i * 5 + 2) % FACES.length],
+          fontStyle: i % 4 === 3 ? 'italic' : 'normal',
+          transform: `rotate(${((i * 37) % 13) - 6}deg) translateY(${((i * 17) % 9) - 4}px)`,
+          // Uneven scissor cuts.
+          clipPath: `polygon(${(i * 7) % 6}% 0, 100% ${(i * 5) % 8}%, ${100 - ((i * 3) % 7)}% 100%, 0 ${100 - ((i * 11) % 9)}%)`,
+        };
+        return (
+          <b key={i} style={style} aria-hidden>
+            {i % 2 ? ch.toUpperCase() : ch.toLowerCase()}
+          </b>
+        );
+      })}
+    </span>
   );
 }
 
-interface Note {
-  text: string;
-  emoji: string;
-  boxed?: boolean;
-}
+/** Where each note sits on the board (desktop); on phones they stack instead. */
+const SLOTS: { side: 'left' | 'right'; y: number; x: number; rot: number }[] = [
+  { side: 'left', y: 8, x: 2, rot: -3 },
+  { side: 'left', y: 120, x: 0, rot: 2 },
+  { side: 'left', y: 232, x: 2, rot: -2 },
+  { side: 'left', y: 340, x: 1, rot: 3 },
+  { side: 'left', y: 445, x: 1, rot: -2 },
+  { side: 'left', y: 565, x: 0, rot: 2 },
+  { side: 'right', y: 0, x: 1, rot: 3 },
+  { side: 'right', y: 122, x: 2, rot: -2 },
+  { side: 'right', y: 222, x: 0, rot: 2 },
+  { side: 'right', y: 322, x: 1, rot: -3 },
+  { side: 'right', y: 432, x: 0, rot: 2 },
+  { side: 'right', y: 545, x: 6, rot: -2 },
+];
 
-function NoteItem({ note, side }: { note: Note; side: 'left' | 'right' }) {
-  const emoji = <span className="note__emoji">{note.emoji}</span>;
+function Scrap({ note, index }: { note: AboutNote; index: number }) {
+  const slot = SLOTS[index % SLOTS.length];
+  const style = {
+    '--y': `${slot.y}px`,
+    '--x': `${slot.x}%`,
+    '--rot': `${slot.rot}deg`,
+  } as CSSProperties;
+  // Arrows sit under the text pointing at the photo; other doodles sit beside it.
+  const arrow = note.doodle === 'arrow' || note.doodle === 'arrow-back';
   return (
-    <div className={`note note--${side}`}>
-      {side === 'right' && emoji}
-      <span className={`note__body ${note.boxed ? 'note--boxed' : ''}`}>
-        <span className="note__text">{note.text}</span>
+    <div className={`scrap scrap--${slot.side} ${note.big ? 'scrap--big' : ''}`} style={style}>
+      {note.doodle && !arrow && <Doodle name={note.doodle} className="scrap__doodle" />}
+      <span className={`scrap__text ${note.circled ? 'scrap__text--circled' : ''}`}>
+        {note.text}
+        {note.circled && <PenCircle />}
+        {note.underlined && <PenUnderline />}
       </span>
-      {side === 'left' && emoji}
+      {note.doodle && arrow && <Doodle name={note.doodle} className="scrap__arrow" />}
     </div>
   );
 }
@@ -40,48 +84,26 @@ export function AboutPage() {
       <div className="about__inner">
         <p className="signoff">{about.signoff}</p>
 
-        <span className="sticker sticker--tl">🌺</span>
-        <span className="sticker sticker--tr">🌸</span>
-
-        <p className="about__hi">{about.greeting} ↓</p>
         <h2 className="about__title">
-          <Burst flip />
-          <small>about</small>
-          <span>
-            {[...about.name].map((ch, i) => (
-              <b key={i} style={{ transform: `rotate(${((i * 37) % 11) - 5}deg)` }}>
-                {ch}
-              </b>
-            ))}
-          </span>
-          <Burst />
+          <span className="about__word">about</span>
+          <RansomName name={about.name} />
         </h2>
         <p className="about__role">{about.role}</p>
 
-        <div className="collage">
-          <div className="notes notes--left">
-            {about.leftNotes.map((n) => (
-              <NoteItem key={n.text} note={n} side="left" />
-            ))}
-          </div>
-
+        <div className="board">
           <figure className="cutout">
             <img src={`${import.meta.env.BASE_URL}${about.photo}`} alt={`Photo of ${about.name}`} />
             <p className="memo">{about.memo}</p>
-            <span className="sticker sticker--mic" aria-hidden>
-              🎙️
-            </span>
           </figure>
 
-          <div className="notes notes--right">
-            {about.rightNotes.map((n) => (
-              <NoteItem key={n.text} note={n} side="right" />
-            ))}
-          </div>
-        </div>
+          {about.notes.map((n, i) => (
+            <Scrap key={n.text} note={n} index={i} />
+          ))}
 
-        <span className="sticker sticker--bl">📸</span>
-        <span className="sticker sticker--br">📌</span>
+          <Doodle name="hearts" className="board__hearts" />
+          <Doodle name="star" className="board__star" />
+          <Doodle name="sparkle" className="board__sparkle" />
+        </div>
       </div>
     </div>
   );
