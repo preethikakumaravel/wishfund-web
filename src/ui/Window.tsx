@@ -38,12 +38,11 @@ export function Window({
   );
 }
 
-export function LevelHeading({ level, title, subtitle }: { level: string; title: string; subtitle: string }) {
+export function PageHeading({ title, subtitle }: { title: string; subtitle: string }) {
   return (
-    <div className="level-heading">
-      <h2 className="level-heading__level">Level {level}</h2>
-      <p className="level-heading__sub">{subtitle}</p>
-      <p className="level-heading__title">{title}</p>
+    <div className="page-heading">
+      <h2 className="page-heading__title">{title}</h2>
+      <p className="page-heading__sub">{subtitle}</p>
     </div>
   );
 }

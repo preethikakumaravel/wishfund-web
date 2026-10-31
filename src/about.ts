@@ -3,7 +3,7 @@
 
 export const about = {
   name: 'Preethika',
-  role: 'Player 01 · Builder of WishFund',
+  role: 'Creator & admin of WishFund',
   greeting: "Hi. Since you're new here, let me be your guide",
   photo: 'me-cutout.png',
   leftNotes: [

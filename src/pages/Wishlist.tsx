@@ -8,7 +8,7 @@ import { activeItems, createItem } from '../state/reducer';
 import type { WishItem } from '../state/reducer';
 import { useStore } from '../state/store';
 import { Pixel } from '../ui/Pixel';
-import { LevelHeading, Window } from '../ui/Window';
+import { PageHeading, Window } from '../ui/Window';
 
 export function WishlistPage() {
   const { state, dispatch } = useStore();
@@ -24,17 +24,17 @@ export function WishlistPage() {
   const totalSaved = active.reduce((s, it) => s + Math.min(it.saved, it.price), 0);
 
   function markBought(item: WishItem) {
-    if (!window.confirm(`Mark "${item.title}" as bought? It moves to your trophy shelf.`)) return;
+    if (!window.confirm(`Mark "${item.title}" as bought? It moves to your Bought list.`)) return;
     playPowerUp();
     dispatch({ type: 'setPurchased', id: item.id, purchased: true });
   }
 
   return (
     <div className="page">
-      <LevelHeading level="01" subtitle="Collect the" title="Quest Items" />
+      <PageHeading title="Wishlist" subtitle="Things you are saving for. The top item gets funded first." />
 
       {active.length > 0 && (
-        <Window title="Hello !!" tone="violet" className="summary-win">
+        <Window title="Overview" tone="violet" className="summary-win">
           <div className="summary">
             <div>
               <div className="small">Saved towards wishes</div>
@@ -47,7 +47,7 @@ export function WishlistPage() {
               <p className="small" style={{ margin: '10px 0 0' }}>
                 {lastFund
                   ? `Last wishlist fund: ${money(lastFund)}. Item #1 fills first.`
-                  : 'Go to Level 02 to fund your wishes.'}
+                  : "Add this month's money in Monthly budget to start funding."}
               </p>
             </div>
             <Pixel name="gift" size={7} className="float-in-place" />
@@ -58,7 +58,7 @@ export function WishlistPage() {
       {active.length === 0 && (
         <div className="empty">
           <Pixel name="star" size={8} />
-          <p>No quest items yet. Found something you want? Grab its link and press + ADD WISH.</p>
+          <p>Your wishlist is empty. Found something you want? Copy its link and press + ADD WISH.</p>
         </div>
       )}
 
@@ -67,7 +67,7 @@ export function WishlistPage() {
           const funded = item.saved >= item.price;
           const eta = etas[item.id];
           return (
-            <Window key={item.id} title={hostOf(item.url) || 'wish.exe'} tone={funded ? 'green' : 'pink'}>
+            <Window key={item.id} title={hostOf(item.url) || 'No link'} tone={funded ? 'green' : 'pink'}>
               <div className="row">
                 <span className="quest__rank">#{i + 1}</span>
                 <span className="spacer" />
@@ -128,10 +128,10 @@ export function WishlistPage() {
 
       {bought.length > 0 && (
         <details className="bought">
-          <summary>★ Trophy shelf ({bought.length})</summary>
+          <summary>★ Bought ({bought.length})</summary>
           <div className="quest-grid">
             {bought.map((item) => (
-              <Window key={item.id} title="trophy.exe" tone="cream">
+              <Window key={item.id} title={item.purchasedAt ? `Bought ${new Date(item.purchasedAt).toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' })}` : 'Bought'} tone="cream">
                 <div className="row">
                   <Pixel name="star" size={3} />
                   <span style={{ fontSize: 22 }}>{item.title}</span>
@@ -204,7 +204,7 @@ function ItemModal({ item, onClose }: { item?: WishItem; onClose: () => void }) 
 
   return (
     <div className="modal" role="dialog" aria-modal="true" aria-label={item ? 'Edit wish' : 'New wish'}>
-      <Window title={item ? 'edit_wish.exe' : 'new_wish.exe'} onClose={onClose}>
+      <Window title={item ? 'Edit wish' : 'New wish'} onClose={onClose}>
         <form onSubmit={save}>
           <label className="field">
             <span>PRODUCT LINK</span>

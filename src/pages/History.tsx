@@ -2,12 +2,12 @@ import { SPLIT_KEYS, SPLIT_META } from '../lib/budget';
 import { formatMoney, monthLabel } from '../lib/money';
 import { useStore } from '../state/store';
 import { Pixel } from '../ui/Pixel';
-import { LevelHeading, Window } from '../ui/Window';
+import { PageHeading, Window } from '../ui/Window';
 
 const CURRENCIES = ['₹', '$', '€', '£', '¥'];
 
 export function HistoryPage() {
-  const { state, dispatch } = useStore();
+  const { state, dispatch, cloud } = useStore();
   const money = (n: number) => formatMoney(n, state.currency);
   const titleOf = (id: string) => state.items.find((it) => it.id === id)?.title ?? 'Deleted item';
 
@@ -18,10 +18,10 @@ export function HistoryPage() {
 
   return (
     <div className="page">
-      <LevelHeading level="03" subtitle="Your" title="Training Log" />
+      <PageHeading title="History" subtitle="Every month you have split, with all-time totals." />
 
       <div className="log-grid">
-        <Window title="Skills Mastery" tone="green">
+        <Window title="All-time totals" tone="green">
           <p style={{ margin: '0 0 8px' }}>All time</p>
           {SPLIT_KEYS.map((k) => (
             <div key={k} className="kv">
@@ -34,7 +34,7 @@ export function HistoryPage() {
           {leftover > 0 && <p className="small">Includes {money(leftover)} of unused wishlist fund moved to savings.</p>}
         </Window>
 
-        <Window title="Options" tone="cream">
+        <Window title="Settings" tone="cream">
           <p style={{ margin: '0 0 8px' }}>Currency</p>
           <div className="chips">
             {CURRENCIES.map((c) => (
@@ -48,12 +48,16 @@ export function HistoryPage() {
               </button>
             ))}
           </div>
-          <p className="small">Data lives only in this browser. Nothing is uploaded.</p>
+          <p className="small">
+            {cloud
+              ? 'Your data is saved to your account and is private to you.'
+              : 'Data lives only in this browser. Nothing is uploaded.'}
+          </p>
           <button
             type="button"
             className="pbtn pbtn--danger"
             onClick={() => {
-              if (window.confirm('Erase all wishes, months and settings from this browser? This cannot be undone.')) {
+              if (window.confirm(`Erase all wishes, months and settings from ${cloud ? 'your account' : 'this browser'}? This cannot be undone.`)) {
                 dispatch({ type: 'reset' });
               }
             }}
@@ -63,10 +67,10 @@ export function HistoryPage() {
         </Window>
 
         {state.months.length === 0 && (
-          <Window title="Training Log" tone="pink">
+          <Window title="No months yet" tone="pink">
             <div className="row">
               <Pixel name="coin" size={4} />
-              <span>No months yet. Clear Level 02 to start your log.</span>
+              <span>Save a month in Monthly budget to start your history.</span>
             </div>
           </Window>
         )}

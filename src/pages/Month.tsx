@@ -6,7 +6,7 @@ import { currentIsoMonth, formatMoney, monthLabel, parseMoney } from '../lib/mon
 import { playCoin } from '../lib/sfx';
 import { activeItems, newId } from '../state/reducer';
 import { useStore } from '../state/store';
-import { LevelHeading, Window } from '../ui/Window';
+import { PageHeading, Window } from '../ui/Window';
 
 function shiftMonth(iso: string, delta: number): string {
   const [y, m] = iso.split('-').map(Number);
@@ -53,7 +53,7 @@ export function MonthPage({ onDone }: { onDone: () => void }) {
 
   return (
     <div className="page">
-      <LevelHeading level="02" subtitle="Power up your" title="Monthly Budget" />
+      <PageHeading title="Monthly budget" subtitle="Enter the money you got this month and split it into bills, spending, savings and wishes." />
 
       <div className="month-layout">
         <div className="console">
@@ -130,13 +130,13 @@ export function MonthPage({ onDone }: { onDone: () => void }) {
               </button>
             )}
             <button type="button" className="pbtn pbtn--go pbtn--big" disabled={!valid} onClick={commit}>
-              CONFIRM ▶
+              SAVE MONTH
             </button>
           </div>
         </div>
 
         <div className="side-windows">
-          <Window title="Weapons Mastery" tone="violet">
+          <Window title="Where the money goes" tone="violet">
             <p style={{ margin: '0 0 8px' }}>Where the money goes:</p>
             {SPLIT_KEYS.map((k) => (
               <div key={k} className="alloc-row">
@@ -148,7 +148,7 @@ export function MonthPage({ onDone }: { onDone: () => void }) {
             ))}
           </Window>
 
-          <Window title="Loot Drop" tone="pink">
+          <Window title="Wishlist funding" tone="pink">
             <p style={{ margin: '0 0 8px' }}>Wishlist fund goes to:</p>
             {active.length === 0 && <p className="small">No wishes yet. The whole fund goes to savings.</p>}
             {active.map((item, i) => {
